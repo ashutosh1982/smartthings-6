@@ -29,67 +29,67 @@ metadata {
 	simulator {
 		status "no motion" : "command: 9881, payload: 00300300"
 		status "motion"    : "command: 9881, payload: 003003FF"
-        status "no vibration" : " command: 9881, payload: 0071050000000007030000"
-        status "vibration" : "command: 9881, payload: 007105000000FF07030000"
-        
-        for (int i = 0; i <= 100; i += 20) {
+		status "no vibration" : " command: 9881, payload: 0071050000000007030000"
+		status "vibration" : "command: 9881, payload: 007105000000FF07030000"
+
+		for (int i = 0; i <= 100; i += 20) {
 			status "temperature ${i}F": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
 				new physicalgraph.zwave.Zwave().sensorMultilevelV2.sensorMultilevelReport(
-                	scaledSensorValue: i,
-                    precision: 1,
-                    sensorType: 1,
-                    scale: 1
+					scaledSensorValue: i,
+					precision: 1,
+					sensorType: 1,
+					scale: 1
 				)
 			).incomingMessage()
 		}
 		for (int i = 0; i <= 100; i += 20) {
 			status "RH ${i}%": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
 				new physicalgraph.zwave.Zwave().sensorMultilevelV2.sensorMultilevelReport(
-                	scaledSensorValue: i,
-                    sensorType: 5
-            	)
+					scaledSensorValue: i,
+					sensorType: 5
+				)
 			).incomingMessage()
 		}
 		for (int i in [0, 20, 89, 100, 200, 500, 1000]) {
 			status "illuminance ${i} lux": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
 				new physicalgraph.zwave.Zwave().sensorMultilevelV2.sensorMultilevelReport(
-                scaledSensorValue: i,
-                sensorType: 3
-                )
+				scaledSensorValue: i,
+				sensorType: 3
+				)
 			).incomingMessage()
 		}
 		for (int i = 0; i <= 11; i += 1) {
 			status "ultraviolet ${i}": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
 				new physicalgraph.zwave.Zwave().sensorMultilevelV2.sensorMultilevelReport(
-                scaledSensorValue: i,
-                sensorType: 27
-                )
+				scaledSensorValue: i,
+				sensorType: 27
+				)
 			).incomingMessage()
 		}
 		for (int i in [0, 5, 10, 15, 50, 99, 100]) {
 			status "battery ${i}%": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
 				new physicalgraph.zwave.Zwave().batteryV1.batteryReport(
-                batteryLevel: i
-                )
+				batteryLevel: i
+				)
 			).incomingMessage()
 		}
 		status "low battery alert": new physicalgraph.zwave.Zwave().securityV1.securityMessageEncapsulation().encapsulate(
 				new physicalgraph.zwave.Zwave().batteryV1.batteryReport(
-            	batteryLevel: 255
-            	)
+				batteryLevel: 255
+				)
 			).incomingMessage()
 		status "wake up": "command: 8407, payload:"
 	}
 	tiles {
 		standardTile("motion","device.motion") {
-            	state "active",label:'motion',icon:"st.motion.motion.active",backgroundColor:"#53a7c0"
-                state "inactive",label:'no motion',icon:"st.motion.motion.inactive",backgroundColor:"#ffffff"
+				state "active",label:'motion',icon:"st.motion.motion.active",backgroundColor:"#53a7c0"
+				state "inactive",label:'no motion',icon:"st.motion.motion.inactive",backgroundColor:"#ffffff"
 			}
 		valueTile("temperature","device.temperature",inactiveLabel: false) {
-            	state "temperature",label:'${currentValue}°',backgroundColors:[
-                	[value: 32, color: "#153591"],
-                    [value: 44, color: "#1e9cbb"],
-                    [value: 59, color: "#90d2a7"],
+				state "temperature",label:'${currentValue}°',backgroundColors:[
+					[value: 32, color: "#153591"],
+					[value: 44, color: "#1e9cbb"],
+					[value: 59, color: "#90d2a7"],
 					[value: 74, color: "#44b621"],
 					[value: 84, color: "#f1d801"],
 					[value: 92, color: "#d04e00"],
@@ -97,92 +97,92 @@ metadata {
 				]
 			}
 		valueTile(
-        	"humidity","device.humidity",inactiveLabel: false) {
-            	state "humidity",label:'RH ${currentValue} %',unit:""
+			"humidity","device.humidity",inactiveLabel: false) {
+				state "humidity",label:'RH ${currentValue} %',unit:""
 			}
 		valueTile(
-        	"illuminance","device.illuminance",inactiveLabel: false) {
-            	state "luminosity",label:'${currentValue} ${unit}',unit:"lux"
+			"illuminance","device.illuminance",inactiveLabel: false) {
+				state "luminosity",label:'${currentValue} ${unit}',unit:"lux"
 			}
 		valueTile(
-        	"ultraviolet","device.ultraviolet",inactiveLabel: false) {
+			"ultraviolet","device.ultraviolet",inactiveLabel: false) {
 				state "ultraviolet",label:'UV ${currentValue} ${unit}',unit:""
 			}
 		standardTile(
 				"vibration", "device.acceleration") {
 				state "active",label:'vibration',icon:"st.motion.motion.active",backgroundColor:"#ff0000"
-                state "inactive",label:'calm',icon:"st.motion.motion.inactive",backgroundColor:"#00ff00"
+				state "inactive",label:'calm',icon:"st.motion.motion.inactive",backgroundColor:"#00ff00"
 			}
 		valueTile(
-        	"battery","device.battery",inactiveLabel: false,decoration: "flat") {
-            	state "battery",label:'${currentValue}% battery',unit:""
+			"battery","device.battery",inactiveLabel: false,decoration: "flat") {
+				state "battery",label:'${currentValue}% battery',unit:""
 			}
-        standardTile(
-        	"configureAfterSecure","device.configure",inactiveLabel: false,decoration: "flat") {
+		standardTile(
+			"configureAfterSecure","device.configure",inactiveLabel: false,decoration: "flat") {
 				state "configure",label:'',action:"configureAfterSecure",icon:"st.secondary.configure"
 			}
 		main([
-        	"motion","vibration","temperature","humidity","illuminance","ultraviolet","battery"
-            ])
+			"motion","vibration","temperature","humidity","illuminance","ultraviolet","battery"
+			])
 		details([
-        	"motion","vibration","temperature","humidity","illuminance","ultraviolet","battery","configureAfterSecure"
-            ])
+			"motion","vibration","temperature","humidity","illuminance","ultraviolet","battery","configureAfterSecure"
+			])
 	}
-    preferences {
+	preferences {
 		input "tempoffset",
 			"number",
 			title: "Temperature offset",
-            description: "negative values reduce the monitored value positive ones add to it",
-            defaultValue: 0,
-            required: false,
-            displayDuringSetup: false
-		input "humidityoffset",
-        	"number",
-            title: "Humidity offset",
-            description: "negative values reduce the monitored value positive ones add to it",
+			description: "negative values reduce the monitored value positive ones add to it",
 			defaultValue: 0,
 			required: false,
-            displayDuringSetup: false
+			displayDuringSetup: false
+		input "humidityoffset",
+			"number",
+			title: "Humidity offset",
+			description: "negative values reduce the monitored value positive ones add to it",
+			defaultValue: 0,
+			required: false,
+			displayDuringSetup: false
 		input "luminanceoffset",
-          	"number",
-            title: "Luminance offset",
-            description: "negative values reduce the monitored value positive ones add to it",
-            defaultValue: 0,
-            required: false,
-	        displayDuringSetup: false
+			"number",
+			title: "Luminance offset",
+			description: "negative values reduce the monitored value positive ones add to it",
+			defaultValue: 0,
+			required: false,
+			displayDuringSetup: false
 		input "ultravioletoffset",
-          	"number",
-            title: "Ultraviolet offset",
-            description: "negative values reduce the monitored value positive ones add to it",
-            defaultValue: 0,
-	        required: false,
+			"number",
+			title: "Ultraviolet offset",
+			description: "negative values reduce the monitored value positive ones add to it",
+			defaultValue: 0,
+			required: false,
 			displayDuringSetup: false
 		input "PIRsensitivity",
-	        "number",
-    	    title: "PIR motion sensitivity",
+			"number",
+			title: "PIR motion sensitivity",
 			description: "A value from 0-127 low to high sensitivity",
 			defaultValue: 64,
 			required: true,
 			displayDuringSetup: true
 		input "ReportingInterval",
-        	"number",
-            title: "Report data every X seconds",
-            description: "A value in seconds, default is 60 / 8 minutes",
-            defaultValue: 60,
-            required: true,
-            displayDuringSetup: true
+			"number",
+			title: "Report data every X seconds",
+			description: "A value in seconds, default is 60 / 8 minutes",
+			defaultValue: 60,
+			required: true,
+			displayDuringSetup: true
 	}
 }
 
 def parse(String description) {
 	def result = null
-    if (description == "updated") {
-        result = null
+	if (description == "updated") {
+		result = null
 		}
 	else {
-       	def cmd = zwave.parse(description, [0x31: 5, 0x30: 2, 0x84: 1])
+		def cmd = zwave.parse(description, [0x31: 5, 0x30: 2, 0x84: 1])
 		if (cmd) {
-       		result = zwaveEvent(cmd)
+			result = zwaveEvent(cmd)
 		}
 	}
 	log.debug "Parsed '${description}' to ${result.inspect()}"
@@ -195,7 +195,7 @@ def zwaveEvent(physicalgraph.zwave.commands.wakeupv1.WakeUpNotification cmd)
 	if (!isConfigured()) {
 		// we're still in the process of configuring a newly joined device
 		log.debug("not sending wakeUpNoMoreInformation yet")
-        result += response(configureAfterSecure())
+		result += response(configureAfterSecure())
 	} else {
 		result += response(zwave.wakeUpV1.wakeUpNoMoreInformation())
 	}
@@ -214,7 +214,7 @@ def zwaveEvent(physicalgraph.zwave.commands.securityv1.SecurityMessageEncapsulat
 }
 
 def zwaveEvent(physicalgraph.zwave.commands.securityv1.SecurityCommandsSupportedReport cmd) {
-    log.debug "Received SecurityCommandsSupportedReport"
+	log.debug "Received SecurityCommandsSupportedReport"
 	response(configureAfterSecure())
 }
 
@@ -246,16 +246,16 @@ def zwaveEvent(physicalgraph.zwave.commands.sensormultilevelv5.SensorMultilevelR
 			map.value = cmd.scaledSensorValue.toInteger()
 			map.unit = "lux"
 			break;
-        case 5:
+		case 5:
 			map.name = "humidity"
 			map.value = cmd.scaledSensorValue.toInteger()
 			map.unit = "%"
 			break;
 		case 27:
-        	map.name = "ultraviolet"
-            map.value = cmd.scaledSensorValue.toInteger()
-            map.unit = ""
-            break;
+			map.name = "ultraviolet"
+			map.value = cmd.scaledSensorValue.toInteger()
+			map.unit = ""
+			break;
 		default:
 			map.descriptionText = cmd.toString()
 	}
@@ -320,7 +320,7 @@ def zwaveEvent(physicalgraph.zwave.Command cmd) {
 
 def configureAfterSecure() {
 	log.debug "configureAfterSecure()"
-    log.debug "PIRsensitivity: $PIRsensitivity, Reporting Interval: $ReportingInterval, Temp offset: $tempoffset, Humidity offset: $humidityoffset, Luminance offset: $luminanceoffset, UV offset: $ultravioletoffset"
+	log.debug "PIRsensitivity: $PIRsensitivity, Reporting Interval: $ReportingInterval, Temp offset: $tempoffset, Humidity offset: $humidityoffset, Luminance offset: $luminanceoffset, UV offset: $ultravioletoffset"
 
 	def PIRsens = 64
 	if (PIRsensitivity) {
@@ -346,7 +346,7 @@ def configureAfterSecure() {
 	if (ultravioletoffset) {
 		ultravioletoff=ultravioletoffset.toInteger()
 	}
-    log.debug "PIRsens: $PIRsens, ReportingInt: $ReportingInt, Tempoffset: $tempoff, Humidityoff: $humidityoff, Luminanceoff: $luminanceoff, UVoff: $ultravioletoff"
+	log.debug "PIRsens: $PIRsens, ReportingInt: $ReportingInt, Tempoffset: $tempoff, Humidityoff: $humidityoff, Luminanceoff: $luminanceoff, UVoff: $ultravioletoff"
 	def request = [
 		// send temperature, humidity, illuminance, ultraviolet and battery
 		zwave.configurationV1.configurationSet(parameterNumber: 0x65, size: 4, scaledConfigurationValue: 240),
@@ -357,42 +357,42 @@ def configureAfterSecure() {
 		// send battery every 20 hours
 		zwave.configurationV1.configurationSet(parameterNumber: 0x66, size: 4, scaledConfigurationValue: 1),
 		zwave.configurationV1.configurationSet(parameterNumber: 0x70, size: 4, scaledConfigurationValue: 20*60*60),
-        // send no-motion report 60 seconds after motion stops
+		// send no-motion report 60 seconds after motion stops
 		zwave.configurationV1.configurationSet(parameterNumber: 0x03, size: 2, scaledConfigurationValue: 60),
 		// enable motion sensor
-        zwave.configurationV1.configurationSet(parameterNumber: 0x04, size: 1, scaledConfigurationValue: 0),
+		zwave.configurationV1.configurationSet(parameterNumber: 0x04, size: 1, scaledConfigurationValue: 0),
 		// send binary sensor report instead of basic set for motion
 		zwave.configurationV1.configurationSet(parameterNumber: 0x05, size: 1, scaledConfigurationValue: 2),
 		// Enable the function of vibration sensor
-        zwave.configurationV1.configurationSet(parameterNumber: 0x07, size: 1, scaledConfigurationValue: 1),
+		zwave.configurationV1.configurationSet(parameterNumber: 0x07, size: 1, scaledConfigurationValue: 1),
 		// disable notification-style motion events
 		// zwave.notificationV3.notificationSet(notificationType: 7, notificationStatus: 0),
-        // configure temp offset
+		// configure temp offset
 		zwave.configurationV1.configurationSet(parameterNumber: 0xC9, size: 2, scaledConfigurationValue: tempoff),
-        // configure humidity offset
+		// configure humidity offset
 		zwave.configurationV1.configurationSet(parameterNumber: 0xCA, size: 2, scaledConfigurationValue: humidityoff),
-        // configure luminance offset
+		// configure luminance offset
 		zwave.configurationV1.configurationSet(parameterNumber: 0xCB, size: 2, scaledConfigurationValue: luminanceoff),
-        // configure ultraviolet offset
+		// configure ultraviolet offset
 		zwave.configurationV1.configurationSet(parameterNumber: 0xCC, size: 2, scaledConfigurationValue: ultravioletoff), 
 
 		zwave.batteryV1.batteryGet(),
 		zwave.sensorBinaryV2.sensorBinaryGet(),
-        
+
 		// Can use the zwaveHubNodeId variable to add the hub to the device's associations:
 		zwave.associationV1.associationSet(groupingIdentifier:2, nodeId:zwaveHubNodeId)
-    ]
+	]
 	
-    setConfigured()
-    //log.debug request
-    secureSequence(request) + ["delay 20000", zwave.wakeUpV1.wakeUpNoMoreInformation().format()]
+	setConfigured()
+	//log.debug request
+	secureSequence(request) + ["delay 20000", zwave.wakeUpV1.wakeUpNoMoreInformation().format()]
 }
 
 def configure() {
-    //["delay 30000"] + secure(zwave.securityV1.securityCommandsSupportedGet())
-    log.debug "configure()"
-   	def reportIntervalSecs = 60;
-    	if (reportInterval) {
+	//["delay 30000"] + secure(zwave.securityV1.securityCommandsSupportedGet())
+	log.debug "configure()"
+	def reportIntervalSecs = 60;
+		if (reportInterval) {
 		reportIntervalSecs = reportInterval.toInteger()
 		}
 	delayBetween([
@@ -404,43 +404,43 @@ def configure() {
 		zwave.configurationV1.configurationSet(parameterNumber: 0x66, size: 4, scaledConfigurationValue: 1).format(),
 		zwave.configurationV1.configurationSet(parameterNumber: 0x70, size: 4, scaledConfigurationValue: 20*60*60).format(),
 
-        // send no-motion report 60 seconds after motion stops
+		// send no-motion report 60 seconds after motion stops
 		zwave.configurationV1.configurationSet(parameterNumber: 0x03, size: 2, scaledConfigurationValue: 60).format(),
 
 		// enable motion sensor
-        zwave.configurationV1.configurationSet(parameterNumber: 0x04, size: 1, scaledConfigurationValue: 0).format(),
+		zwave.configurationV1.configurationSet(parameterNumber: 0x04, size: 1, scaledConfigurationValue: 0).format(),
 
 		// send binary sensor report instead of basic set for motion
 		zwave.configurationV1.configurationSet(parameterNumber: 0x05, size: 1, scaledConfigurationValue: 2).format(),
 
 		// configure PIR sensitivity for multisensor 6 min to max 0-127 default 64
-        zwave.configurationV1.configurationSet(parameterNumber: 0x06, size: 1, scaledConfigurationValue: 64).format(),
+		zwave.configurationV1.configurationSet(parameterNumber: 0x06, size: 1, scaledConfigurationValue: 64).format(),
 
 		// Enable the function of vibration sensor
-        zwave.configurationV1.configurationSet(parameterNumber: 0x07, size: 1, scaledConfigurationValue: 1).format(),
+		zwave.configurationV1.configurationSet(parameterNumber: 0x07, size: 1, scaledConfigurationValue: 1).format(),
 
 		// disable notification-style motion events
 		zwave.notificationV3.notificationSet(notificationType: 7, notificationStatus: 0).format(),
-        
-        // configure temp offset
-        zwave.configurationV1.configurationSet(parameterNumber: 0xC9, size: 2, scaledConfigurationValue: 20).format(),
-        
-        // configure humidity offset
-        zwave.configurationV1.configurationSet(parameterNumber: 0xCA, size: 2, scaledConfigurationValue: 20).format(),
-        
-        // configure luminance offset
-        zwave.configurationV1.configurationSet(parameterNumber: 0xCB, size: 2, scaledConfigurationValue: 0).format(),
-        
-        // configure ultraviolet offset
-        zwave.configurationV1.configurationSet(parameterNumber: 0xCC, size: 2, scaledConfigurationValue: 5).format(),
-        
+
+		// configure temp offset
+		zwave.configurationV1.configurationSet(parameterNumber: 0xC9, size: 2, scaledConfigurationValue: 20).format(),
+
+		// configure humidity offset
+		zwave.configurationV1.configurationSet(parameterNumber: 0xCA, size: 2, scaledConfigurationValue: 20).format(),
+
+		// configure luminance offset
+		zwave.configurationV1.configurationSet(parameterNumber: 0xCB, size: 2, scaledConfigurationValue: 0).format(),
+
+		// configure ultraviolet offset
+		zwave.configurationV1.configurationSet(parameterNumber: 0xCC, size: 2, scaledConfigurationValue: 5).format(),
+
 		zwave.batteryV1.batteryGet(),
 		zwave.sensorBinaryV2.sensorBinaryGet(),
 		
-        // Can use the zwaveHubNodeId variable to add the hub to the device's associations:
+		// Can use the zwaveHubNodeId variable to add the hub to the device's associations:
 		zwave.associationV1.associationSet(groupingIdentifier:2, nodeId:zwaveHubNodeId)
-    ])	
-    setConfigured()
+	])
+	setConfigured()
 	zwave.wakeUpV1.wakeUpNoMoreInformation().format()
 }
 
@@ -464,6 +464,6 @@ private secureSequence(commands, delay=200) {
 
 def updated() {
 	log.debug "updated()"
-    log.debug "PIRsensitivity: $PIRsensitivity, Reporting Interval: $ReportingInterval, Temp offset: $tempoffset, Humidity offset: $humidityoffset, Luminance offset: $luminanceoffset, UV offset: $ultravioletoffset"
-    configureAfterSecure()
+	log.debug "PIRsensitivity: $PIRsensitivity, Reporting Interval: $ReportingInterval, Temp offset: $tempoffset, Humidity offset: $humidityoffset, Luminance offset: $luminanceoffset, UV offset: $ultravioletoffset"
+	configureAfterSecure()
 }
