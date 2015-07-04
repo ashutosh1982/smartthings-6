@@ -17,7 +17,7 @@
 metadata {
 	definition (name: "Aeon Multisensor 6", namespace: "robertvandervoort", author: "Robert Vandervoort") {
 		capability "Motion Sensor"
-		capability 	"Acceleration Sensor"
+		capability "Acceleration Sensor"
 		capability "Temperature Measurement"
 		capability "Relative Humidity Measurement"
 		capability "Illuminance Measurement"
